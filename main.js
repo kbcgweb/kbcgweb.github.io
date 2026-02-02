@@ -16,11 +16,11 @@ document.querySelectorAll('.nav-menu a').forEach(link => {
 (function () {
     // 1) Put your images here (relative paths)
     const pastorImages = [
-        "pastor_sohn_2.jpg",
         "IMG_8130.jpg",
         "IMG_8131.jpg",
         "IMG_8136.jpg"
         //"timothy.jpg"
+        // "pastor_sohn_2.jpg",
         // "pastor_2.jpg",
         // "pastor_3.jpg"
     ];

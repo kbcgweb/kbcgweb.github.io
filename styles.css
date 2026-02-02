@@ -84,8 +84,10 @@ footer{padding:28px 0;color:var(--muted);background:#ffffff;border-top:1px solid
 .mb-24{margin-bottom:24px}
 .mt-8{margin-top:8px}
 .chip{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);color:#1e40af;padding:6px 10px;border-radius:999px;font-size:12px}
-<!-- .btn{display:inline-flex;gap:8px;align-items:center;background:linear-gradient(180deg, #3b82f6, #2563eb);color:white;padding:10px 14px;border-radius:12px;border:1px solid rgba(2,6,23,.12);box-shadow:0 2px 0 rgba(0,0,0,.05)} -->
-<!-- .btn.alt{background:linear-gradient(180deg,#10b981,#059669)} -->
+
+/* .btn{display:inline-flex;gap:8px;align-items:center;background:linear-gradient(180deg, #3b82f6, #2563eb);color:white;padding:10px 14px;border-radius:12px;border:1px solid rgba(2,6,23,.12);box-shadow:0 2px 0 rgba(0,0,0,.05)} */
+/* .btn.alt{background:linear-gradient(180deg,#10b981,#059669)} */
+
 .muted{color:var(--muted)}
 .mono{font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px}
 .ybtn {
@@ -144,7 +146,7 @@ footer{padding:28px 0;color:var(--muted);background:#ffffff;border-top:1px solid
 
 .greetings-section .wrap {
     display: grid;
-    grid-template-columns: 0.9fr 1.1fr;
+    grid-template-columns: 1.0fr 1.0fr;
     align-items: center;
     gap: 40px;
 }
@@ -162,7 +164,7 @@ footer{padding:28px 0;color:var(--muted);background:#ffffff;border-top:1px solid
 }
 
 .greetings-text p {
-    font-size: 1.05rem;
+    font-size: 1.00rem;
     line-height: 1.8;
     color: #334155;
     margin-bottom: 16px;
@@ -183,6 +185,16 @@ footer{padding:28px 0;color:var(--muted);background:#ffffff;border-top:1px solid
     }
     .pastor-photo img {
         margin: 0 auto;
+    }
+    .greetings-section .wrap {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    /* center the photo + signature line */
+    .greetings-text .signature {
+        justify-content: center;
+        width: 100%;
     }
 }
 /* Hide the toggle button on large screens */
@@ -447,7 +459,7 @@ footer{padding:28px 0;color:var(--muted);background:#ffffff;border-top:1px solid
 .pastor-carousel {
     width: 100%;
     max-width: 520px;
-    aspect-ratio: 5 / 4;   /* keeps same shape as 520x420 */
+    aspect-ratio: 5 / 4.5;   /* keeps same shape as 520x420 */
     position: relative;
     overflow: hidden;
     border-radius: 16px;
@@ -470,7 +482,6 @@ table {
 th, td {
     word-break: keep-all;    /* prevent Korean syllable-by-syllable breaking */
     overflow-wrap: break-word; /* if something MUST break, break cleanly */
-    <!-- overflow-wrap: anywhere; /* if something MUST break, break cleanly */ -->
     white-space: normal;
 }
 
@@ -609,4 +620,18 @@ html {
 
 .paypal-btn:hover {
     transform: translateY(-2px);
+}
+
+.signature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.signature-photo {
+    width: 62px;
+    height: 62px;
+    object-fit: cover;
+    border-radius: 50%;
 }
