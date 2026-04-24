@@ -635,3 +635,96 @@ html {
     object-fit: cover;
     border-radius: 50%;
 }
+
+/* ── Sermon audio player (YouTube-backed) ── */
+.sermon-audio-wrap {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: var(--bg-soft, #f1f5f9);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    position: relative;
+}
+
+.sermon-audio-label {
+    margin: 0 0 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.yt-audio-player {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.yt-audio-play {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--brand, #2563eb);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+    padding: 0;
+}
+.yt-audio-play:hover {
+    background: var(--brand-dark, #1e40af);
+}
+.yt-audio-play:active {
+    transform: scale(0.95);
+}
+
+.yt-audio-time {
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted, #475569);
+    min-width: 36px;
+    text-align: center;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.yt-audio-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(2, 6, 23, 0.10);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.yt-audio-progress {
+    height: 100%;
+    width: 0%;
+    background: var(--brand, #2563eb);
+    border-radius: 3px;
+    transition: width 0.25s linear;
+    pointer-events: none;
+}
+
+.yt-audio-player.buffering .yt-audio-play {
+    opacity: 0.6;
+    cursor: wait;
+}
+.yt-audio-player.buffering .yt-audio-progress {
+    animation: yt-audio-pulse 1s ease-in-out infinite;
+}
+@keyframes yt-audio-pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.4; }
+}
+
+@media (max-width: 480px) {
+    .yt-audio-player { gap: 6px; }
+    .yt-audio-play { width: 36px; height: 36px; }
+    .yt-audio-play svg { width: 22px; height: 22px; }
+    .yt-audio-time { font-size: 11px; min-width: 30px; }
+}

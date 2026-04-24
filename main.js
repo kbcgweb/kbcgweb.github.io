@@ -196,14 +196,139 @@ document.querySelectorAll('.nav-menu a').forEach(link => {
     document.querySelectorAll(".ministry-carousel").forEach(initMiniCarousel);
 })();
 
+/* ── YouTube audio player helpers ── */
+function extractYouTubeId(embedUrl) {
+    var match = embedUrl.match(/\/embed\/([^?/]+)/);
+    return match ? match[1] : null;
+}
+
+function formatTime(seconds) {
+    if (!seconds || isNaN(seconds)) return "0:00";
+    seconds = Math.floor(seconds);
+    var h = Math.floor(seconds / 3600);
+    var m = Math.floor((seconds % 3600) / 60);
+    var s = seconds % 60;
+    if (h > 0) return h + ":" + (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+    return m + ":" + (s < 10 ? "0" : "") + s;
+}
+
+var ytAudioPlayer = null;
+var ytVideoId = null;
+var ytProgressTimer = null;
+
 fetch("content/texts.json")
-  .then(r => r.json())
-  .then(data => {
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
     document.getElementById("motto").textContent = data.motto;
     document.getElementById("verse").textContent = data.verse;
     document.getElementById("cite").textContent = data.cite;
     document.getElementById("sermon-title").textContent = data.sermon_title;
     document.getElementById("sermon-pastor-name").textContent = data.sermon_pastor_name;
     document.getElementById("sermon-video").src = data.youtube_embed;
+
+    ytVideoId = extractYouTubeId(data.youtube_embed);
+    if (ytVideoId) {
+      document.getElementById("sermon-audio-wrap").style.display = "";
+      if (window.YT && window.YT.Player) initYtAudioPlayer();
+    }
   });
+
+function onYouTubeIframeAPIReady() {
+    if (ytVideoId) initYtAudioPlayer();
+}
+
+function initYtAudioPlayer() {
+    if (ytAudioPlayer) return;
+    ytAudioPlayer = new YT.Player("yt-audio-hidden", {
+        height: "1",
+        width: "1",
+        videoId: ytVideoId,
+        playerVars: {
+            autoplay: 0, controls: 0, disablekb: 1,
+            fs: 0, modestbranding: 1, playsinline: 1, rel: 0
+        },
+        events: {
+            onReady: onAudioPlayerReady,
+            onStateChange: onAudioStateChange
+        }
+    });
+}
+
+function onAudioPlayerReady() {
+    var checkDuration = setInterval(function() {
+        var dur = ytAudioPlayer.getDuration();
+        if (dur > 0) {
+            document.getElementById("yt-audio-duration").textContent = formatTime(dur);
+            clearInterval(checkDuration);
+        }
+    }, 500);
+
+    document.getElementById("yt-audio-play").addEventListener("click", function() {
+        var state = ytAudioPlayer.getPlayerState();
+        if (state === YT.PlayerState.PLAYING) {
+            ytAudioPlayer.pauseVideo();
+        } else {
+            ytAudioPlayer.playVideo();
+        }
+    });
+
+    document.getElementById("yt-audio-track").addEventListener("click", function(e) {
+        var rect = this.getBoundingClientRect();
+        var fraction = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        var duration = ytAudioPlayer.getDuration();
+        if (duration > 0) ytAudioPlayer.seekTo(fraction * duration, true);
+    });
+}
+
+function onAudioStateChange(event) {
+    var playerEl = document.getElementById("yt-audio-player");
+    var iconPlay = document.getElementById("icon-play");
+    var iconPause = document.getElementById("icon-pause");
+
+    switch (event.data) {
+        case YT.PlayerState.PLAYING:
+            iconPlay.style.display = "none";
+            iconPause.style.display = "";
+            playerEl.classList.remove("buffering");
+            startProgressTimer();
+            break;
+        case YT.PlayerState.PAUSED:
+            iconPlay.style.display = "";
+            iconPause.style.display = "none";
+            playerEl.classList.remove("buffering");
+            stopProgressTimer();
+            break;
+        case YT.PlayerState.BUFFERING:
+            playerEl.classList.add("buffering");
+            break;
+        case YT.PlayerState.ENDED:
+            iconPlay.style.display = "";
+            iconPause.style.display = "none";
+            playerEl.classList.remove("buffering");
+            stopProgressTimer();
+            document.getElementById("yt-audio-progress").style.width = "0%";
+            document.getElementById("yt-audio-current").textContent = "0:00";
+            break;
+        default:
+            playerEl.classList.remove("buffering");
+    }
+}
+
+function startProgressTimer() {
+    stopProgressTimer();
+    ytProgressTimer = setInterval(function() {
+        if (!ytAudioPlayer) return;
+        var current = ytAudioPlayer.getCurrentTime();
+        var duration = ytAudioPlayer.getDuration();
+        if (duration > 0) {
+            document.getElementById("yt-audio-progress").style.width = (current / duration * 100) + "%";
+            document.getElementById("yt-audio-current").textContent = formatTime(current);
+            document.getElementById("yt-audio-duration").textContent = formatTime(duration);
+        }
+    }, 250);
+}
+
+function stopProgressTimer() {
+    if (ytProgressTimer) { clearInterval(ytProgressTimer); ytProgressTimer = null; }
+}
 

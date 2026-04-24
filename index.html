@@ -502,6 +502,26 @@
                                     allowfullscreen
                                     style="position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:12px"></iframe>
                         </div>
+                        <div class="sermon-audio-wrap" id="sermon-audio-wrap" style="display:none">
+                            <p class="sermon-audio-label">🎧 설교 음성 듣기</p>
+                            <div class="yt-audio-player" id="yt-audio-player">
+                                <button type="button" class="yt-audio-play" id="yt-audio-play" aria-label="재생/일시정지">
+                                    <svg class="icon-play" id="icon-play" viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+                                        <polygon points="6,3 20,12 6,21"/>
+                                    </svg>
+                                    <svg class="icon-pause" id="icon-pause" viewBox="0 0 24 24" width="28" height="28" fill="currentColor" style="display:none">
+                                        <rect x="5" y="3" width="4" height="18"/>
+                                        <rect x="15" y="3" width="4" height="18"/>
+                                    </svg>
+                                </button>
+                                <span class="yt-audio-time" id="yt-audio-current">0:00</span>
+                                <div class="yt-audio-track" id="yt-audio-track">
+                                    <div class="yt-audio-progress" id="yt-audio-progress"></div>
+                                </div>
+                                <span class="yt-audio-time" id="yt-audio-duration">0:00</span>
+                            </div>
+                            <div id="yt-audio-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none"></div>
+                        </div>
                     </article>
                 </div>
             </div>
@@ -596,6 +616,7 @@
             </div>
         </footer>
 
+        <script src="https://www.youtube.com/iframe_api"></script>
         <script src="main.js"></script>
 
     </body>
