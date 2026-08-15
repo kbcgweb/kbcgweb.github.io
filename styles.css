@@ -636,6 +636,55 @@ html {
     border-radius: 50%;
 }
 
+/* 교역자 소개 */
+.staff-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 26px;
+    margin-top: 14px;
+}
+
+.staff-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0;
+}
+
+.staff-card img {
+    width: 96px;
+    height: 96px;
+    flex: 0 0 auto;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(2,6,23,.12);
+}
+
+.staff-card figcaption {
+    line-height: 1.5;
+}
+
+.staff-role {
+    display: block;
+    color: var(--brand-2);
+    font-weight: 700;
+    font-size: .82rem;
+    letter-spacing: .04em;
+}
+
+.staff-name {
+    display: block;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.staff-note {
+    display: block;
+    color: var(--muted);
+    font-size: .85rem;
+}
+
 /* ── Sermon audio player (YouTube-backed) ── */
 .sermon-audio-wrap {
     margin-top: 14px;
